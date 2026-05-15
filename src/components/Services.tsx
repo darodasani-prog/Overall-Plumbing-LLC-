@@ -1,88 +1,83 @@
-import { motion } from 'motion/react';
-import { SERVICES } from '../constants';
-import { Phone, ChevronRight } from 'lucide-react';
+import { motion, useScroll, useTransform } from 'motion/react';
+import { useRef } from 'react';
+import { Droplets, Wrench, ShieldCheck, Zap, Factory, Construction, ChevronRight } from 'lucide-react';
+
+const SERVICES = [
+  { icon: <Droplets />, title: "Emergency Rescue", desc: "Pipe bursts and major leaks stopped fast.", color: "bg-red-500" },
+  { icon: <Wrench />, title: "Residential Service", desc: "Expert care for your home plumbing system.", color: "bg-blue-500" },
+  { icon: <Factory />, title: "Commercial Power", desc: "Industrial strength solutions for businesses.", color: "bg-electric-blue" },
+  { icon: <Construction />, title: "Drain Cleaning", desc: "Clearing Texas-sized clogs efficiently.", color: "bg-green-500" },
+  { icon: <ShieldCheck />, title: "Water Heaters", desc: "Installation and repair for all brands.", color: "bg-purple-500" },
+  { icon: <Zap />, title: "Leak Detection", desc: "High-tech ultrasonic location testing.", color: "bg-yellow-500" }
+];
 
 export default function Services() {
+  const targetRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: targetRef,
+  });
+
+  const x = useTransform(scrollYProgress, [0, 1], ["0%", "-66%"]);
+
   return (
-    <section id="services" className="py-32 bg-white relative">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
-          <div className="max-w-2xl">
-            <span className="text-accent-blue font-black uppercase tracking-[0.3em] text-xs mb-6 block">Our Expertise</span>
-            <h2 className="text-5xl md:text-7xl font-black uppercase leading-[0.9] tracking-tighter">
-              All-Inclusive <br/>
-              <span className="text-emergency-orange">Texas</span> Plumbing.
-            </h2>
+    <section ref={targetRef} className="relative h-[300vh] bg-navy-dark overflow-hidden">
+      <div className="sticky top-0 h-screen flex flex-col items-center justify-center overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6 w-full mb-16 relative z-10">
+          <div className="flex justify-between items-end">
+            <div>
+              <span className="text-electric-blue font-black uppercase tracking-[0.4em] text-xs mb-4 block">Our Solutions</span>
+              <h2 className="text-5xl md:text-8xl font-black uppercase italic leading-[0.85] tracking-tighter">
+                Premium Support <br/> For <span className="text-electric-blue">Texas</span> Homes.
+              </h2>
+            </div>
+            <p className="max-w-xs text-white/40 font-medium hidden lg:block pb-4">
+              From minor leaks to major commercial infrastructure — we bring the Overall standard to every job.
+            </p>
           </div>
-          <p className="text-lg text-primary-navy/60 font-bold max-w-sm">
-            From drips to commercial repipes — Overall Plumbing Texas handles it with flat-rate precision.
-          </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-8">
-          {SERVICES.map((service, index) => (
-            <motion.div
-              key={service.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.05 }}
-              whileHover={{ y: -10 }}
-              className="group relative bg-soft-gray rounded-[2.5rem] p-10 border-2 border-transparent hover:border-accent-blue/10 hover:bg-white hover:shadow-2xl transition-all duration-500 h-full flex flex-col"
-            >
-              <div className="text-5xl mb-8 group-hover:scale-125 group-hover:rotate-6 transition-transform duration-500 origin-left">
-                {service.icon}
-              </div>
-              <div className="mb-4">
-                <span className="text-[10px] font-black uppercase tracking-widest text-accent-blue bg-accent-blue/5 px-2 py-1 rounded-full">
-                   {service.category}
-                </span>
-              </div>
-              <h3 className="text-2xl font-black uppercase tracking-tight text-primary-navy mb-4">
-                {service.title}
-              </h3>
-              <p className="text-sm text-primary-navy/60 font-bold mb-8 flex-grow leading-relaxed">
-                {service.description}
-              </p>
-              
-              <div className="flex items-center justify-between pt-8 border-t border-black/5">
-                <span className="text-[10px] font-black text-primary-navy/30 uppercase tracking-[0.2em] italic">
-                  {service.priceIndicator}
-                </span>
-                <a 
-                  href="tel:9724630180" 
-                  className="w-10 h-10 bg-white text-primary-navy rounded-full shadow-lg flex items-center justify-center group-hover:bg-emergency-orange group-hover:text-white transition-all transform group-hover:rotate-45"
-                >
-                  <ChevronRight className="w-5 h-5" />
-                </a>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Dynamic CTA Banner */}
-        <div className="mt-32 p-12 lg:p-20 bg-primary-navy rounded-[4rem] text-white relative overflow-hidden group">
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-accent-blue/10 blur-[120px] -mr-64 -mt-64 group-hover:bg-accent-blue/20 transition-all duration-1000"></div>
-          <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-emergency-orange/5 blur-[120px] -ml-64 -mb-64 group-hover:bg-emergency-orange/10 transition-all duration-1000"></div>
-          
-          <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-12">
-            <div className="max-w-2xl text-center lg:text-left">
-              <h3 className="text-4xl md:text-6xl font-black uppercase leading-[0.9] tracking-tighter mb-6 underline decoration-emergency-orange decoration-8 underline-offset-8">
-                The "Overall" Standard
-              </h3>
-              <p className="text-xl text-white/70 font-bold leading-relaxed">
-                If it carries water, gas, or waste, we fix it. Over 15 years experience handling Texas's toughest plumbing challenges.
-              </p>
-            </div>
-            <div className="flex flex-col sm:flex-row gap-6 w-full lg:w-auto">
-              <a href="tel:9724630180" className="btn-primary py-6 px-12 group">
-                 <span>FREE ESTIMATE</span>
-                 <ChevronRight className="w-6 h-6 group-hover:translate-x-2 transition-transform" />
-              </a>
-            </div>
-          </div>
+        {/* Horizontal Scroll Content */}
+        <div className="w-full flex">
+          <motion.div style={{ x }} className="flex gap-8 px-6 lg:px-[calc((100vw-1280px)/2)]">
+            {SERVICES.map((service, i) => (
+              <ServiceCard key={i} {...service} index={i} />
+            ))}
+          </motion.div>
         </div>
       </div>
     </section>
+  );
+}
+
+function ServiceCard({ icon, title, desc, color, index }: any) {
+  return (
+    <motion.div
+      initial={{ filter: "blur(10px)", opacity: 0 }}
+      whileInView={{ filter: "blur(0px)", opacity: 1 }}
+      viewport={{ once: false, amount: 0.1 }}
+      transition={{ duration: 0.8, delay: index * 0.1 }}
+      className="w-[350px] md:w-[450px] glass-card p-10 md:p-16 rounded-[40px] flex flex-col group relative overflow-hidden"
+    >
+      {/* Background Icon Glow */}
+      <div className={`absolute -top-20 -right-20 w-64 h-64 ${color} opacity-5 blur-[80px] rounded-full group-hover:opacity-10 transition-opacity`}></div>
+
+      <div className={`w-16 h-16 md:w-24 md:h-24 ${color}/10 rounded-3xl flex items-center justify-center text-white mb-10 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500`}>
+        {icon && <div className="w-8 h-8 md:w-12 md:h-12 text-white">{icon}</div>}
+      </div>
+
+      <h3 className="text-3xl md:text-5xl font-black uppercase tracking-tighter mb-6 leading-none italic">
+        {title}
+      </h3>
+      <p className="text-lg md:text-xl text-white/40 font-medium mb-12 flex-grow leading-relaxed">
+        {desc}
+      </p>
+
+      <div className="flex items-center gap-4 group/btn cursor-pointer">
+        <span className="text-xs font-black uppercase tracking-[0.2em] group-hover/btn:text-electric-blue transition-colors">Learn More</span>
+        <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center group-hover/btn:bg-electric-blue group-hover/btn:border-electric-blue transition-all">
+          <ChevronRight className="w-5 h-5 group-hover/btn:text-navy-dark transition-colors" />
+        </div>
+      </div>
+    </motion.div>
   );
 }

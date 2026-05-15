@@ -1,92 +1,79 @@
 import { motion } from 'motion/react';
-import { Phone, Search, FileCheck, Wrench } from 'lucide-react';
+import { Search, Phone, FileCheck, Wrench, ChevronRight } from 'lucide-react';
 
 const STEPS = [
-  {
-    icon: <Phone className="w-6 h-6" />,
-    title: "Call or Book",
-    desc: "Any time, any day. We answer 24/7.",
-    color: "bg-primary-navy"
+  { 
+    icon: <Phone />, 
+    title: "Instant Dispatch", 
+    desc: "Call us and a licensed master is dispatched within minutes to your north Texas location.",
+    color: "bg-electric-blue"
   },
-  {
-    icon: <Search className="w-6 h-6" />,
-    title: "We Diagnose",
-    desc: "Camera inspection & expert testing.",
-    color: "bg-accent-blue"
+  { 
+    icon: <Search />, 
+    title: "Rescue Evaluation", 
+    desc: "We perform a forensic assessment of your system to find the root cause, not just the symptom.",
+    color: "bg-blue-600"
   },
-  {
-    icon: <FileCheck className="w-6 h-6" />,
-    title: "You Approve",
-    desc: "Clear, upfront flat rate quote.",
-    color: "bg-emergency-orange"
+  { 
+    icon: <FileCheck />, 
+    title: "Flat Quote", 
+    desc: "No hidden fees, no hourly tricks. You get a transparent, single-price quote before work begins.",
+    color: "bg-blue-800"
   },
-  {
-    icon: <Wrench className="w-6 h-6" />,
-    title: "We Fix",
-    desc: "Clean, guaranteed, and code-compliant.",
-    color: "bg-success-green"
+  { 
+    icon: <Wrench />, 
+    title: "Precision Fix", 
+    desc: "Our licensed team executes the repair with high-grade tools and parts that last for years.",
+    color: "bg-navy-dark"
   }
 ];
 
 export default function Process() {
   return (
-    <section className="py-24 bg-white relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center max-w-3xl mx-auto mb-20">
-          <span className="text-accent-blue font-black uppercase tracking-[0.25em] text-xs mb-4 block">The "Overall" Standard</span>
-          <h2 className="text-5xl md:text-6xl font-black uppercase font-oswald tracking-tighter leading-none mb-6">
-            From Panic To Rescue <br/>In <span className="text-emergency-orange">4 Simple Steps.</span>
+    <section className="py-48 bg-navy-dark relative overflow-hidden">
+      {/* Background Graphic */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-electric-blue/[0.02] border border-white/[0.05] rounded-full pointer-events-none"></div>
+
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
+        <div className="text-center mb-32">
+          <span className="text-electric-blue font-black uppercase tracking-[0.6em] text-[10px] mb-8 block">The Overall Standard</span>
+          <h2 className="text-6xl md:text-9xl font-black uppercase italic tracking-tighter leading-none mb-12">
+            The Rescue <br/> <span className="text-glow text-electric-blue underline decoration-8 underline-offset-8">Blueprint.</span>
           </h2>
-          <p className="text-lg text-primary-navy/60 font-medium leading-relaxed">
-            No pressure. No hidden fees. Just honest Texas plumbing done right the first time.
-          </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 relative">
-          {/* Connecting Line (Desktop) */}
-          <div className="hidden lg:block absolute top-[60px] left-[15%] right-[15%] h-px bg-black/5 z-0"></div>
-
-          {STEPS.map((step, index) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {STEPS.map((step, i) => (
             <motion.div
-              key={index}
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
+              key={i}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: index * 0.15 }}
-              className="flex flex-col items-center text-center relative z-10"
+              transition={{ delay: i * 0.15, duration: 0.8 }}
+              className="glass-card p-12 rounded-[40px] group relative"
             >
-              <div className="relative mb-8">
-                <div className={`${step.color} w-[120px] h-[120px] rounded-[2.5rem] flex items-center justify-center text-white shadow-2xl relative z-10 hover:rotate-6 transition-transform cursor-default`}>
-                   {step.icon}
-                </div>
-                <div className="absolute -top-4 -right-4 w-10 h-10 bg-white rounded-full shadow-lg border-2 border-soft-gray flex items-center justify-center font-black text-primary-navy text-sm z-20">
-                   {index + 1}
-                </div>
+              <div className="absolute -top-6 left-12 w-12 h-12 bg-electric-blue text-navy-dark rounded-2xl flex items-center justify-center font-black italic text-xl shadow-lg shadow-electric-blue/20 transition-transform group-hover:scale-110">
+                0{i + 1}
               </div>
-              <h3 className="text-2xl font-black uppercase font-oswald tracking-tight mb-3 text-primary-navy">
+              
+              <div className="w-16 h-16 bg-white/5 rounded-3xl flex items-center justify-center text-electric-blue mb-10 group-hover:bg-electric-blue group-hover:text-navy-dark transition-all duration-500">
+                {step.icon && <div className="w-8 h-8">{step.icon}</div>}
+              </div>
+
+              <h3 className="text-2xl font-black uppercase italic tracking-tight mb-6">
                 {step.title}
               </h3>
-              <p className="text-sm font-medium text-primary-navy/60 leading-relaxed max-w-[200px]">
+              <p className="text-white/40 font-medium leading-relaxed">
                 {step.desc}
               </p>
+
+              {i < STEPS.length - 1 && (
+                  <div className="hidden lg:block absolute top-1/2 -right-4 translate-y-[-50%] text-white/5">
+                      <ChevronRight className="w-8 h-8" />
+                  </div>
+              )}
             </motion.div>
           ))}
-        </div>
-
-        <div className="mt-24 p-10 md:p-16 rounded-[4rem] bg-soft-gray border border-black/5 text-center relative group">
-           <div className="absolute inset-0 bg-gradient-to-br from-white/0 to-white/100 pointer-events-none rounded-[4rem]"></div>
-           <h3 className="text-3xl md:text-4xl lg:text-5xl font-black uppercase font-oswald tracking-tighter mb-6 relative z-10">
-              "Water Damage Doesn't Wait. <br/><span className="text-accent-blue">Neither Do We.</span>"
-           </h3>
-           <p className="text-lg text-primary-navy/70 max-w-2xl mx-auto mb-10 font-medium relative z-10">
-              Our dispatchers are standing by right now in Wylie, ready to rescue your home.
-           </p>
-           <div className="flex flex-col sm:flex-row gap-4 justify-center relative z-10">
-             <a href="tel:9724630180" className="bg-emergency-orange text-white px-10 py-5 rounded-2xl font-black text-xl hover:shadow-[0_15px_40px_rgba(255,107,0,0.4)] transition-all shadow-lg active:scale-95 flex items-center gap-3 justify-center">
-               <Phone className="w-6 h-6 border-2 border-white/30 rounded-full p-1" />
-               (972) 463-0180
-             </a>
-           </div>
         </div>
       </div>
     </section>

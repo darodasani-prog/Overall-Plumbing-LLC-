@@ -1,102 +1,189 @@
-import { motion } from 'motion/react';
-import { Star, Phone, MessageSquare } from 'lucide-react';
+import { motion, useScroll, useTransform, AnimatePresence, useMotionValue, useSpring, animate } from 'motion/react';
+import { Phone, ChevronRight, Droplets, ShieldCheck, Zap } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import type { MouseEvent } from 'react';
 
-export default function Hero() {
+interface HeroProps {
+  setCursor: (text: string) => void;
+}
+
+function MagneticButton({ children, className, onMouseEnter, onMouseLeave, href }: any) {
+    const x = useMotionValue(0);
+    const y = useMotionValue(0);
+    const mouseX = useSpring(x, { stiffness: 150, damping: 15 });
+    const mouseY = useSpring(y, { stiffness: 150, damping: 15 });
+
+    const handleMouseMove = (e: MouseEvent) => {
+        const { clientX, clientY, currentTarget } = e;
+        const { left, top, width, height } = currentTarget.getBoundingClientRect();
+        const centerX = left + width / 2;
+        const centerY = top + height / 2;
+        x.set((clientX - centerX) * 0.3);
+        y.set((clientY - centerY) * 0.3);
+    };
+
+    const handleMouseLeave = () => {
+        x.set(0);
+        y.set(0);
+        onMouseLeave();
+    };
+
+    return (
+        <motion.a
+            href={href}
+            style={{ x: mouseX, y: mouseY }}
+            onMouseMove={handleMouseMove}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            className={className}
+        >
+            {children}
+        </motion.a>
+    );
+}
+
+export default function Hero({ setCursor }: HeroProps) {
+  const [displayText, setDisplayText] = useState("");
+  const fullText = "Emergency Plumbing Experts";
+  const [index, setIndex] = useState(0);
+  const [subHeadlineVisible, setSubHeadlineVisible] = useState(false);
+
+  useEffect(() => {
+    if (index < fullText.length) {
+      const timeout = setTimeout(() => {
+        setDisplayText((prev) => prev + fullText[index]);
+        setIndex((prev) => prev + 1);
+      }, 70);
+      return () => clearTimeout(timeout);
+    } else {
+        setSubHeadlineVisible(true);
+    }
+  }, [index]);
+
+  const droplets = Array.from({ length: 20 });
+
   return (
-    <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-40 bg-white overflow-hidden">
-      {/* Background Decorative Text */}
-      <div className="absolute top-1/2 left-0 w-full text-[25vw] font-black text-primary-navy/[0.02] leading-none -translate-y-1/2 select-none pointer-events-none uppercase tracking-tighter">
-        Overall
+    <section className="relative h-screen min-h-[700px] flex items-center justify-center overflow-hidden pt-20">
+      <div className="absolute inset-0 z-0 opacity-20 pointer-events-none">
+        {droplets.map((_, i) => (
+          <div
+            key={i}
+            className="droplet"
+            style={{
+              left: `${Math.random() * 100}%`,
+              "--duration": `${Math.random() * 3 + 2}s`,
+              animationDelay: `${Math.random() * 5}s`,
+            } as any}
+          />
+        ))}
       </div>
-      
-      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-16 items-center relative z-10">
-        <div className="lg:col-span-7">
+
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-electric-blue/10 blur-[120px] rounded-full z-0"></div>
+
+      <div className="max-w-7xl mx-auto px-6 relative z-10 w-full">
+        <div className="text-center">
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="mb-8"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="inline-flex items-center gap-2 bg-white/5 border border-white/10 px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.3em] text-glow text-electric-blue mb-8"
           >
-            <span className="bg-success-green text-white px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-[0.2em] shadow-lg shadow-success-green/20">
-              ● Live Dispatch Available NOW in Wylie
-            </span>
+            <Zap className="w-3 h-3 fill-current" />
+            24/7 Rapid Response Available
           </motion.div>
 
-          <motion.h2
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="text-6xl md:text-8xl xl:text-9xl font-black leading-[0.85] tracking-tighter mb-8 uppercase italic"
-          >
-            Panic to <br/>
-            <span className="text-accent-blue">Peace</span> <br/>
-            In One Call.
-          </motion.h2>
+          <h1 className="text-6xl md:text-8xl lg:text-9xl font-black leading-[0.85] tracking-tighter mb-8 uppercase italic selection:bg-electric-blue selection:text-navy-dark">
+            {displayText}
+            <span className="inline-block w-1 md:w-3 h-[0.9em] bg-electric-blue animate-pulse ml-2" />
+          </h1>
 
-          <motion.p
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="text-xl md:text-2xl text-primary-navy/70 max-w-lg mb-12 leading-relaxed font-bold"
-          >
-            Flat-rate pricing. Same-day service. 24/7 Texas licensed pros. We rescue your home when water won't wait.
-          </motion.p>
+          <div className="h-12 md:h-16 mb-12">
+            <AnimatePresence>
+                {subHeadlineVisible && (
+                    <motion.p
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="text-xl md:text-2xl text-white/60 max-w-2xl mx-auto font-medium"
+                    >
+                        Flat-rate pricing. Licensed masters. We rescue your Texas home from water disasters instantly.
+                    </motion.p>
+                )}
+            </AnimatePresence>
+          </div>
 
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="flex flex-col sm:flex-row gap-6 items-center sm:items-start"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 1.5 }}
+            className="flex flex-col sm:flex-row gap-6 items-center justify-center pt-8"
           >
-            <a href="tel:9724630180" className="btn-primary group">
-              <Phone className="w-6 h-6 group-hover:rotate-12 transition-transform" />
-              CALL (972) 463-0180
-            </a>
-            <div className="flex flex-col justify-center items-center sm:items-start h-full py-2">
-              <div className="flex text-emergency-orange text-2xl mb-1">★★★★★</div>
-              <div className="text-[10px] font-black uppercase tracking-[0.2em] opacity-40">4.9/5 Rating | BBB A+</div>
-            </div>
-          </motion.div>
-        </div>
-
-        <div className="lg:col-span-5 relative">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8, rotate: 5 }}
-            animate={{ opacity: 1, scale: 1, rotate: 0 }}
-            transition={{ duration: 0.8, type: 'spring' }}
-            className="relative"
-          >
-            <div className="aspect-[4/5] bg-soft-gray rounded-[3rem] overflow-hidden shadow-2xl relative border-8 border-white group">
-              <img 
-                src="https://lh3.googleusercontent.com/d/1m7wywPda4rqkjtnQ2Y_3WsBBk15Qu2Jv" 
-                alt="Overall Plumbing Texas Service"
-                className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
-                referrerPolicy="no-referrer"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-primary-navy via-primary-navy/20 to-transparent opacity-80"></div>
-              
-              <div className="absolute bottom-10 left-10 right-10 text-white translate-y-4 group-hover:translate-y-0 transition-transform">
-                <p className="text-[10px] font-black uppercase tracking-widest text-success-green mb-3">On-Site in Wylie, TX</p>
-                <p className="text-3xl font-black leading-tight italic tracking-tighter uppercase mb-4">
-                  "Arrived in 45 mins on a Sunday. Lifesavers!"
-                </p>
-                <div className="w-12 h-1 bg-emergency-orange"></div>
-              </div>
-            </div>
-            
-            {/* Absolute Badges */}
-            <motion.div
-              animate={{ y: [0, -15, 0] }}
-              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-              className="absolute -top-10 -right-10 bg-white p-6 rounded-3xl shadow-2xl hidden md:block border border-soft-gray"
+            <MagneticButton
+              href="tel:9724630180"
+              className="btn-premium btn-electric w-full sm:w-auto"
+              onMouseEnter={() => setCursor("CALL NOW")}
+              onMouseLeave={() => setCursor("")}
             >
-              <div className="text-center">
-                <p className="text-4xl font-black text-primary-navy leading-none">15+</p>
-                <p className="text-[10px] font-black text-accent-blue uppercase tracking-widest mt-1">Years Local</p>
-              </div>
-            </motion.div>
+              <Phone className="w-5 h-5 animate-pulse" />
+              (972) 463-0180
+            </MagneticButton>
+            <MagneticButton
+              href="#estimate"
+              className="btn-premium btn-outline w-full sm:w-auto"
+              onMouseEnter={() => setCursor("GET QUOTE")}
+              onMouseLeave={() => setCursor("")}
+            >
+              Get Free Estimate
+              <ChevronRight className="w-5 h-5" />
+            </MagneticButton>
           </motion.div>
         </div>
       </div>
+
+      <DriftingBadge 
+        icon={<Droplets className="w-5 h-5" />} 
+        text="Leak Fix" 
+        className="top-1/4 left-[10%]" 
+        delay={0}
+      />
+      <DriftingBadge 
+        icon={<ShieldCheck className="w-5 h-5" />} 
+        text="Licensed" 
+        className="bottom-1/3 left-[15%]" 
+        delay={1}
+      />
+      <DriftingBadge 
+        icon={<Zap className="w-5 h-5" />} 
+        text="Fast Repipe" 
+        className="top-1/3 right-[10%]" 
+        delay={1.5}
+      />
+      <DriftingBadge 
+        icon={<Droplets className="w-5 h-5" />} 
+        text="24/7 Rescue" 
+        className="bottom-1/4 right-[15%]" 
+        delay={0.5}
+      />
     </section>
   );
+}
+
+function DriftingBadge({ icon, text, className, delay }: { icon: any, text: string, className: string, delay: number }) {
+    return (
+        <motion.div
+            animate={{
+                y: [0, -40, 0],
+                x: [0, 20, 0],
+                rotate: [0, 5, 0]
+            }}
+            transition={{
+                duration: 6,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: delay
+            }}
+            className={`absolute z-20 hidden lg:flex items-center gap-3 glass-card px-6 py-3 rounded-full ${className}`}
+        >
+            <div className="text-electric-blue">{icon}</div>
+            <span className="text-[10px] font-black uppercase tracking-widest">{text}</span>
+        </motion.div>
+    )
 }
