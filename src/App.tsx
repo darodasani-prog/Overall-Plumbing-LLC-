@@ -13,6 +13,8 @@ import ServiceArea from './components/ServiceArea';
 import EmergencyCTA from './components/EmergencyCTA';
 import Footer from './components/Footer';
 import DrawingPipe from './components/DrawingPipe';
+import RevealSection from './components/RevealSection';
+import EstimateForm from './components/EstimateForm';
 import { Phone } from 'lucide-react';
 
 export default function App() {
@@ -38,10 +40,10 @@ export default function App() {
   }, []);
 
   return (
-    <div className="relative min-h-screen bg-navy-dark selection:bg-electric-blue selection:text-navy-dark font-sans text-white overflow-x-hidden cursor-none">
+    <div className="relative min-h-screen bg-navy-dark selection:bg-electric-blue selection:text-navy-dark font-sans text-white overflow-x-hidden md:cursor-none">
       {/* Custom Cursor */}
        <motion.div
-        className="fixed top-0 left-0 w-8 h-8 md:w-10 md:h-10 bg-electric-blue rounded-full z-[9999] pointer-events-none mix-blend-difference flex items-center justify-center overflow-hidden transition-transform duration-100"
+        className="fixed top-0 left-0 w-10 h-10 bg-electric-blue rounded-full z-[9999] pointer-events-none mix-blend-difference hidden md:flex items-center justify-center overflow-hidden transition-transform duration-100"
         style={{
           x: cursorX,
           y: cursorY,
@@ -74,10 +76,21 @@ export default function App() {
         <TrustBar />
         <Stats />
         <Services />
+        <RevealSection 
+          imageId="1m7wywPda4rqkjtnQ2Y_3WsBBk15Qu2Jv" 
+          headline="Unyielding Precision." 
+          subheadline="We don't just fix pipes. We secure the future of your Texas estate with industrial-grade resilience."
+        />
         <Differentiators />
         <Showcase />
         <Process />
         <SocialProof />
+        <RevealSection 
+          imageId="1fajCTcd4P7ZAk_NP2N_XaYT02fGcCDVG" 
+          headline="The Master Standard." 
+          subheadline="Experience the harmony of expert craft and rapid response. Every job, every time."
+        />
+        <EstimateForm setCursor={setCursorText} />
         <EmergencyCTA />
         <ServiceArea />
       </main>

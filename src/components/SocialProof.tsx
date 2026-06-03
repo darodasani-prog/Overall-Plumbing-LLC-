@@ -18,7 +18,7 @@ export default function SocialProof() {
   const rotate = useTransform(scrollYProgress, [0, 1], [20, -20]);
 
   return (
-    <section ref={containerRef} className="py-48 bg-navy-dark overflow-hidden perspective-1000">
+    <section ref={containerRef} id="testimonials" className="py-48 bg-navy-dark overflow-hidden perspective-1000">
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div className="text-center mb-32">
           <span className="text-electric-blue font-black uppercase tracking-[0.6em] text-[10px] mb-8 block">World Class Reputation</span>

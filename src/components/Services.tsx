@@ -20,7 +20,7 @@ export default function Services() {
   const x = useTransform(scrollYProgress, [0, 1], ["0%", "-66%"]);
 
   return (
-    <section ref={targetRef} className="relative h-[300vh] bg-navy-dark overflow-hidden">
+    <section ref={targetRef} id="services" className="relative h-[300vh] bg-navy-dark overflow-hidden">
       <div className="sticky top-0 h-screen flex flex-col items-center justify-center overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 w-full mb-16 relative z-10">
           <div className="flex justify-between items-end">
@@ -52,23 +52,29 @@ export default function Services() {
 function ServiceCard({ icon, title, desc, color, index }: any) {
   return (
     <motion.div
-      initial={{ filter: "blur(10px)", opacity: 0 }}
-      whileInView={{ filter: "blur(0px)", opacity: 1 }}
-      viewport={{ once: false, amount: 0.1 }}
-      transition={{ duration: 0.8, delay: index * 0.1 }}
+      initial={{ opacity: 0, y: 60, scale: 0.93, filter: "blur(8px)" }}
+      whileInView={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+      viewport={{ once: true, margin: "-100px 0px" }}
+      transition={{ 
+        type: "spring",
+        stiffness: 85,
+        damping: 18,
+        delay: index * 0.08
+      }}
+      whileHover={{ y: -8, transition: { duration: 0.3 } }}
       className="w-[350px] md:w-[450px] glass-card p-10 md:p-16 rounded-[40px] flex flex-col group relative overflow-hidden"
     >
       {/* Background Icon Glow */}
-      <div className={`absolute -top-20 -right-20 w-64 h-64 ${color} opacity-5 blur-[80px] rounded-full group-hover:opacity-10 transition-opacity`}></div>
+      <div className={`absolute -top-20 -right-20 w-64 h-64 ${color} opacity-5 blur-[80px] rounded-full group-hover:opacity-15 transition-opacity duration-500`}></div>
 
       <div className={`w-16 h-16 md:w-24 md:h-24 ${color}/10 rounded-3xl flex items-center justify-center text-white mb-10 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500`}>
         {icon && <div className="w-8 h-8 md:w-12 md:h-12 text-white">{icon}</div>}
       </div>
 
-      <h3 className="text-3xl md:text-5xl font-black uppercase tracking-tighter mb-6 leading-none italic">
+      <h3 className="text-3xl md:text-5xl font-black uppercase tracking-tighter mb-6 leading-none italic group-hover:text-electric-blue transition-colors duration-300">
         {title}
       </h3>
-      <p className="text-lg md:text-xl text-white/40 font-medium mb-12 flex-grow leading-relaxed">
+      <p className="text-lg md:text-xl text-white/40 font-medium mb-12 flex-grow leading-relaxed group-hover:text-white/60 transition-colors duration-300">
         {desc}
       </p>
 
